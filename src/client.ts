@@ -495,43 +495,4 @@ export class GuardrailClient {
   ): Promise<{ success: boolean; message: string }> {
     return this.request('DELETE', `/v2/organizations/${orgId}`, { token });
   }
-
-  // ===========================================================================
-  // Admin — Feature Flags (requires Keycloak 'admin' realm role)
-  // ===========================================================================
-
-  /** GET /v2/admin/features — list all feature flag overrides. */
-  getFeatureFlags(token?: string): Promise<{
-    flags: Array<{
-      name: string;
-      displayName: string;
-      description: string;
-      stripeMetadataKey: string;
-      hasOverride: boolean;
-      globalKillSwitch: boolean;
-      tierOverrides: Partial<Record<string, boolean>> | null;
-      updatedAt: string | null;
-      updatedBy: string | null;
-    }>;
-    total: number;
-  }> {
-    return this.request('GET', '/v2/admin/features', { token });
-  }
-
-  /** PUT /v2/admin/features/:name — upsert a feature flag override. */
-  setFeatureFlag(
-    name: string,
-    body: { globalKillSwitch?: boolean; tierOverrides?: Partial<Record<string, boolean>> },
-    token?: string
-  ): Promise<{ flag: unknown; message: string }> {
-    return this.request('PUT', `/v2/admin/features/${name}`, { token, body });
-  }
-
-  /** DELETE /v2/admin/features/:name — remove a feature flag override. */
-  deleteFeatureFlag(
-    name: string,
-    token?: string
-  ): Promise<{ deleted: boolean; name: string; message: string }> {
-    return this.request('DELETE', `/v2/admin/features/${name}`, { token });
-  }
 }
